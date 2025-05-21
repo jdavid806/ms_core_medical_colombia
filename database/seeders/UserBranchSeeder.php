@@ -27,11 +27,10 @@ class UserBranchSeeder extends Seeder
             $randomBranches = $branches->random(rand(1, 3));
 
             foreach ($randomBranches as $branchId) {
-                UserBranch::updateOrCreate([
-                    'user_id' => $userId,
-                    'branch_id' => $branchId,
-                    'is_active' => 1
-                ]);
+                UserBranch::updateOrCreate(
+                    ['user_id' => $userId, 'branch_id' => $branchId], // Condición para evitar duplicados
+                    ['is_active' => 1]
+                );
             }
         }
     }

@@ -30,12 +30,14 @@ class Appointment extends Model
         'product_id',
         'supervisor_user_id',
         'exam_recipe_id',
+        'copayment_amount',
     ];
 
     //dame un json para crear una cita basado en estos campos
 
     protected $casts = [
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
+        'copayment_amount' => 'decimal:2',
     ];
 
 

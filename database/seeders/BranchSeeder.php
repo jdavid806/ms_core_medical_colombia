@@ -60,7 +60,7 @@ class BranchSeeder extends Seeder
         ];
 
         foreach ($data as $item) {
-            Branch::create($item);
+            Branch::updateOrCreate($item);
         }
     }
 }

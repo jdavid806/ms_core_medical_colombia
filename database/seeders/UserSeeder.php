@@ -76,7 +76,24 @@ class UserSeeder extends Seeder
             ],
         ];
         foreach ($data as $item) {
-            User::updateOrCreate($item);
+            User::updateOrCreate(
+                ['external_id' => $item['external_id']], // Condición para evitar duplicados
+                [
+                    'first_name' => $item['first_name'],
+                    'middle_name' => $item['middle_name'],
+                    'last_name' => $item['last_name'],
+                    'second_last_name' => $item['second_last_name'],
+                    'user_role_id' => $item['user_role_id'],
+                    'user_specialty_id' => $item['user_specialty_id'],
+                    'is_active' => $item['is_active'],
+                    'country_id' => $item['country_id'],
+                    'city_id' => $item['city_id'],
+                    'gender' => $item['gender'],
+                    'address' => $item['address'],
+                    'phone' => $item['phone'],
+                    'email' => $item['email'],
+                ]
+            );
         }
     }
 }

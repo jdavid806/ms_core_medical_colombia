@@ -27,7 +27,7 @@ class UserAvailabilitySeeder extends Seeder
                 [$startTime, $endTime] = $this->randomTimeRange();
 
                 $branchId = ($appointmentType == 1 && $branches->isNotEmpty()) ? $branches->random() : null;
-
+                UserAvailability::truncate(); // Elimina todos los registros y resetea la secuencia
                 UserAvailability::updateOrCreate([
                     'user_id' => $user,
                     'appointment_type_id' => $appointmentType,
