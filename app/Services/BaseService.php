@@ -55,6 +55,7 @@ class BaseService implements BaseServiceInterface
 
     public function update($id, array $data)
     {
+
         try {
             return $this->repository->update($id, $data);
         } catch (Exception $e) {

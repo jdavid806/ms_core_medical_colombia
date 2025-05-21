@@ -60,6 +60,7 @@ class AppointmentService extends OneToManyService
     public function createForParent($patientId, array $data)
     {
         return DB::transaction(function () use ($patientId, $data) {
+
             $associatedProduct = $this->inventoryService->getProductById($data['product_id']);
 
             $data['attention_type'] = $associatedProduct['attention_type'] == 'LABORATORY' ?
@@ -83,6 +84,8 @@ class AppointmentService extends OneToManyService
                     $createdAppointment->userAvailability->branch->id
                 );
             }
+
+
 
             return $createdAppointment;
         });
@@ -260,14 +263,12 @@ class AppointmentService extends OneToManyService
         }
     }
 
-    public function changeStatus($statusKey, $appointmentId)
+    public function changeStatus($appointmentId, $statusKey,)
     {
 
         $newState = AppointmentState::where('name', $statusKey)->first();
 
         return $this->update($appointmentId, ['appointment_state_id' => $newState->id]);
-
-        dd($newState);
     }
 
     public function getLastByPatient($patientId)

@@ -182,9 +182,9 @@ class AdmissionService extends OneToManyService
             $invoiceDetails = $data['invoice_detail'];
             $payments = $data['payments'];
 
+
             $exams = [];
-
-
+         
 
             foreach ($invoiceDetails as $invoiceDetail) {
                 $associatedProduct = $this->inventoryService->getProductById($invoiceDetail['product_id']);
@@ -299,6 +299,7 @@ class AdmissionService extends OneToManyService
                 "entity_authorized_amount" => $admission['entity_authorized_amount'],
 
             ]);
+
 
 
             $this->appointmentService->changeStatus('pending_consultation', $admission['appointment_id']);

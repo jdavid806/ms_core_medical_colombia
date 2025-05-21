@@ -8,8 +8,6 @@ use App\Http\Controllers\Api\V1\ItemLookupController;
 
 Route::prefix('create')->group(function () {
     Route::post('/tenant', [TenantController::class, 'createTenant']);
-    
-    
 });
 
 Route::post('/{type}', [ItemLookupController::class, 'showOrCreate']);

@@ -82,6 +82,7 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use App\Http\Controllers\Api\V1\ProductServiceController;
 use App\Http\Controllers\Api\V1\RepresentativeController;
 use App\Http\Controllers\ClinicalEvolutionNoteController;
+use App\Http\Controllers\Api\V1\CopaymentRuleControllerV1;
 use App\Http\Controllers\Api\V1\EstimateServiceController;
 use App\Http\Controllers\Api\V1\ResponseAgentAIController;
 use App\Http\Controllers\Api\V1\TemplateServiceController;
@@ -95,6 +96,7 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Controllers\Api\V1\BranchRepresentativeController;
 use App\Http\Controllers\Api\V1\ConversationalFunnelController;
 use App\Http\Controllers\Api\V1\ProductTypeInventoryController;
+use App\Http\Controllers\Api\V1\ExternalProductCacheControllerV1;
 use App\Http\Controllers\Api\V1\IntegrationCredentialControllerV1;
 use App\Http\Controllers\Api\V1\PatientCompanionSocialSecurityController;
 
@@ -467,5 +469,7 @@ Route::prefix('medical')->middleware([
             'db' => DB::connection()->getDatabaseName(),
         ];
     });
-    
+
+    Route::apiResource('copayment-rules', CopaymentRuleControllerV1::class);
+    Route::apiResource('external-product-caches',ExternalProductCacheControllerV1::class);
 });

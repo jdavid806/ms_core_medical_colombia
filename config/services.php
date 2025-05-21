@@ -52,5 +52,9 @@ return [
 
     ],
 
+    'admin' => [
+        'products_url' => env('ADMIN_PRODUCTS_URL', 'http://admin.microservice/api/v1/products'),
+    ],
+
 
 ];

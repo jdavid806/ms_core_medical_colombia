@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\AppointmentState;
+use Illuminate\Support\Facades\DB;
 use App\Services\AppointmentService;
+use App\Repositories\PatientRepository;
+use Illuminate\Support\Facades\Validator;
+use App\Services\Api\V1\CopaymentRuleService;
 use App\Http\Requests\Api\V1\BulkStoreAppointmentRequest;
 use App\Http\Requests\Appointment\StoreAppointmentRequest;
 use App\Http\Requests\Appointment\UpdateAppointmentRequest;
 use App\Http\Requests\Api\V1\BulkAppointment\ValidateBulkAppointmentRequest;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
 
 class AppointmentController extends Controller
 {
@@ -38,7 +41,7 @@ class AppointmentController extends Controller
         'examRecipe.user',
     ];
 
-    public function __construct(AppointmentService $service)
+    public function __construct(AppointmentService $service, private CopaymentRuleService $copaymentRuleService, private PatientRepository $patientRepository)
     {
         $this->service = $service;
     }
@@ -56,11 +59,24 @@ class AppointmentController extends Controller
     public function store(StoreAppointmentRequest $request, $patientId)
     {
 
-        $xDomain = $request->header('X-DOMAIN');
-        app()->instance('X-Domain-Global', $xDomain);
+        return DB::transaction(function () use ($request, $patientId) {
+            $xDomain = $request->header('X-DOMAIN');
+            app()->instance('X-Domain-Global', $xDomain);
 
+            $appointment = $this->service->createForParent($patientId, $request->validated());
 
-        return $this->service->createForParent($patientId, $request->validated());
+            $patient = $this->patientRepository->find($patientId);
+
+            $copayment = $this->copaymentRuleService->calculateForAppointment($appointment, $patient);
+
+            // Puedes guardar el copago estimado en la cita, si lo deseas
+            $appointment->update(['copayment_amount' => $copayment]);
+
+            return response()->json([
+                'appointment' => $appointment,
+                'copayment' => $copayment
+            ]);
+        });
     }
 
     public function bulkStore(BulkStoreAppointmentRequest $request, $patientId)

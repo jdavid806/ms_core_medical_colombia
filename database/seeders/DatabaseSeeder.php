@@ -6,6 +6,7 @@ use App\Models\Patient;
 use App\Models\SocialSecurity;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\CopaymentRuleSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,6 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            ClinicalRecordTypeSeeder::class,
             UserRoleSeeder::class,
             UserSpecialtySeeder::class,
             AppointmentStateSeeder::class,
@@ -25,6 +27,7 @@ class DatabaseSeeder extends Seeder
             UserBranchSeeder::class,
             UserAvailabilitySeeder::class,
             ExamOrderStateSeeder::class,
+            CopaymentRuleSeeder::class,
         ]);
 
         //Patient::factory()->count(10)->create();

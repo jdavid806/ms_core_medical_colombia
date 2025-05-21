@@ -50,7 +50,10 @@ class AppointmentStateSeeder extends Seeder
         ];
 
         foreach ($data as $item) {
-            AppointmentState::updateOrCreate($item);
+            AppointmentState::updateOrCreate(
+                ['name' => $item['name']], // Condición única para evitar duplicados
+                ['is_active' => $item['is_active']]
+            );
         }
     }
 }
